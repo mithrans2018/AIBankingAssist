@@ -1,0 +1,38 @@
+# Local secrets and environment settings
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Personal documents and local knowledge stores
+*.pdf
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+qdrant_storage/
+**/qdrant_storage/
+/Notes.txt
+
+# Python
+**/.venv/
+**/venv/
+**/__pycache__/
+*.py[cod]
+
+# Node and Angular
+**/node_modules/
+**/.angular/
+**/dist/
+
+# Java and Gradle
+**/.gradle/
+**/build/
+**/target/
+
+# Editors and logs
+**/.idea/
+**/.vscode/
+*.log
+python-*.exe

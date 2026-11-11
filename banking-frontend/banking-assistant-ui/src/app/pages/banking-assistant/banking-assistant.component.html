@@ -1,0 +1,130 @@
+<div class="app-container">
+
+ <!-- Sidebar -->
+ <aside class="sidebar">
+ <div class="brand">
+ <div class="brand-icon">B</div>
+ <span>BankAI</span>
+ </div>
+
+ <button class="new-chat" (click)="newChat()">
+ + New conversation
+ </button>
+
+ <div class="sidebar-label">YOUR ASSISTANT</div>
+ <div class="sidebar-item active"> Banking Assistant</div>
+
+ <div class="sidebar-footer">
+ <div class="avatar">U</div>
+ <div>
+ <strong>My Account</strong>
+ <small>Personal banking</small>
+ </div>
+ </div>
+ </aside>
+
+ <!-- Main Chat Area -->
+ <main class="main-content">
+
+ <header class="topbar">
+ <div>
+ <h3>Banking Assistant</h3>
+ <span class="online-status">● AI Assistant</span>
+ </div>
+ <div class="secure-label"> Secure conversation</div>
+ </header>
+
+ <section class="chat-area">
+
+ <div class="welcome-section" *ngIf="messages.length === 1">
+ <div class="welcome-icon">✦</div>
+ <h1>Your finances, <span>made simpler.</span></h1>
+ <p>Ask questions about banking, budgeting, savings and financial planning.</p>
+
+ <div class="suggestion-grid">
+ <button
+ *ngFor="let suggestion of suggestions"
+ (click)="sendMessage(suggestion)">
+ {{ suggestion }}
+ <span>↗</span>
+ </button>
+ </div>
+ </div>
+
+ <div class="messages">
+
+ <div
+ *ngFor="let message of messages"
+ class="message-row"
+ [class.user-row]="message.sender === 'user'">
+
+ <div class="message-avatar">
+ {{ message.sender === 'user' ? 'U' : '✦' }}
+ </div>
+
+ <div class="message-content">
+ <div class="sender-name">
+ {{ message.sender === 'user' ? 'You' : 'BankAI Assistant' }}
+ </div>
+
+ <div class="message-bubble">
+ {{ message.text }}
+ </div>
+
+ <small class="message-time">
+ {{ message.time | date:'shortTime' }}
+ </small>
+ </div>
+
+ </div>
+
+ <div class="message-row" *ngIf="loading">
+ <div class="message-avatar">✦</div>
+ <div class="message-content">
+ <div class="sender-name">BankAI Assistant</div>
+ <div class="message-bubble typing">Thinking...</div>
+ </div>
+ </div>
+
+ </div>
+
+ </section>
+
+ <!-- Input Area -->
+ <footer class="chat-footer">
+ <div class="input-wrapper">
+ <input
+ type="text"
+ [(ngModel)]="userMessage"
+ (keyup.enter)="sendMessage()"
+ placeholder="Ask anything about banking..."
+ [disabled]="loading">
+
+ <button
+ class="send-button"
+ (click)="sendMessage()"
+ [disabled]="loading || !userMessage.trim()">
+ ➤
+ </button>
+ </div>
+
+ <div class="pdf-upload-row">
+ <label class="pdf-picker">
+ Add a PDF
+ <input #pdfInput type="file" accept="application/pdf,.pdf" (change)="onPdfSelected($event)">
+ </label>
+ <span class="pdf-name" *ngIf="selectedPdf">{{ selectedPdf.name }} ({{ formatFileSize(selectedPdf.size) }})</span>
+ <button class="pdf-upload-button" (click)="uploadPdf(pdfInput)" [disabled]="!selectedPdf || uploadingPdf">
+ {{ uploadingPdf ? 'Processing...' : 'Upload PDF' }}
+ </button>
+ </div>
+ <p class="pdf-status" *ngIf="pdfStatus">{{ pdfStatus }}</p>
+
+ <p class="disclaimer">
+ AI-generated responses may not always be accurate.
+ Do not share passwords, PINs or sensitive banking details.
+ </p>
+ </footer>
+
+ </main>
+</div>
